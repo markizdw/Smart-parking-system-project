@@ -12,8 +12,6 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity sensor is
     Port ( trig : out STD_LOGIC;
-           echo : out STD_LOGIC;
-           transit : out STD_LOGIC;
            clk : in STD_LOGIC);
 end sensor;
 

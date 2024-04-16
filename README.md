@@ -3,7 +3,7 @@
 ## Description
 This project presents a smart parking monitoring system designed to optimise the performance of parking spaces. The ultrasonic sensor is able to detect the presence of a car in front of it, and therefore provide information on the 7-segment display about free spaces in the car park and its overall occupancy. Our project implements two such sensors located at the entrance and exit of the car park.
 
-Image 1 here
+![parking system overview](https://github.com/markizdw/DE1_project_VUT/assets/114153808/a8e24295-fadc-4517-ba8d-616ab9735eb6)
 
 ### Project team
 Cristóvão Cristóvão (BPC-TLI)

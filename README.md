@@ -28,6 +28,6 @@ Source: https://digilent.com/reference/programmable-logic/nexys-a7/reference-man
 
 Simple ultrasonic sensor. The basic principle of operation is to receive a reflected signal from an object, so that we can determine its presence and distance to it.
 
-Image of sensor here
+![HC-SR04](https://github.com/markizdw/DE1_project_VUT/assets/114153808/3fb5c647-f808-4843-8759-223d665550f8)
 
 User guide (PDF): [HC-SR04 User Guide.pdf](https://github.com/markizdw/DE1_project_VUT/files/15001950/HC-SR04.User.Guide.pdf)

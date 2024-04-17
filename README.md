@@ -26,7 +26,7 @@ Source: https://digilent.com/reference/programmable-logic/nexys-a7/reference-man
 
 ## Ultrasonic sensor HC-SR04
 
-Simple ultrasonic sensor. The basic principle of operation is to receive a reflected signal from an object, so that we can determine its presence and distance to it.
+Simple ultrasonic sensor. The basic principle of operation is to receive a reflected signal from an object, so that we can determine its presence and distance to it.  This sensor provides 2 cm to 400 cm of non-contact measurement functionality with a ranging accuracy that can reach up to 3mm. Each HC-SR04 module includes an ultrasonic transmitter, a receiver and a control circuit.
 
 ![HC-SR04](https://github.com/markizdw/DE1_project_VUT/assets/114153808/3fb5c647-f808-4843-8759-223d665550f8)
 

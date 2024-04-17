@@ -1,0 +1,132 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+
+entity top_level is
+    Port (
+        clk       : in  std_logic;                    -- Clock principal
+        BTNC      : in  std_logic;                    -- Reset geral
+        echo1     : in  std_logic;                    -- Echo sensor 1
+        echo2     : in  std_logic;                    -- Echo sensor 2
+        trig1     : out std_logic;                    -- Trigger sensor 1
+        trig2     : out std_logic;                    -- Trigger sensor 2
+        CA        : out   std_logic;                    --! Cathode of segment A
+        CB        : out   std_logic;                    --! Cathode of segment B
+        CC        : out   std_logic;                    --! Cathode of segment C
+        CD        : out   std_logic;                    --! Cathode of segment D
+        CE        : out   std_logic;                    --! Cathode of segment E
+        CF        : out   std_logic;                    --! Cathode of segment F
+        CG        : out   std_logic;                    --! Cathode of segment G
+        DP        : out   std_logic;                    --! Decimal point
+        an1       : out std_logic_vector(3 downto 0); -- Ânodos display 1
+        an2       : out std_logic_vector(3 downto 0)  -- Ânodos display 2
+    );
+end top_level;
+
+architecture Behavioral of top_level is
+    
+    -- Component Declarations
+    component sensor is
+      Port (
+            clk : in STD_LOGIC;  -- Clock
+            trig : out STD_LOGIC;  -- Pino Trigger do HC-SR04
+            echo : in STD_LOGIC;  -- Pino Echo do HC-SR04
+            sensor_out : out STD_LOGIC;  -- Sinal processado do sensor
+            distance : out std_logic_vector(15 downto 0)
+        );
+    end component;
+    
+    component counter is
+      generic(
+        nbit : integer := 16  -- Número de bits do contador aumentado para suportar 4 dígitos BCD
+      );
+      Port ( 
+        clk : in std_logic;
+        rst : in std_logic;
+        s1 : in std_logic;
+        s2 : in std_logic;
+        count : out std_logic_vector(nbit - 1 downto 0)
+      );
+    end component;
+    
+    component display is
+            port (
+                clk   : in  std_logic;
+                rst   : in  std_logic;
+                bin   : in  std_logic_vector(15 downto 0);  -- Entrada binária ajustada para 4 dígitos
+                seg   : out std_logic_vector(6 downto 0);
+                dp    : out std_logic;
+                an    : out std_logic_vector(3 downto 0)
+            );
+   end component;
+
+    -- Internal Signals
+    signal sig_s1, sig_s2 : std_logic;
+    signal sig_tmp : std_logic_vector(15 downto 0); -- Ajustado para 4 dígitos
+    signal sig_distance1, sig_distance2 : std_logic_vector(15 downto 0); -- Separate distance signals
+
+begin
+    -- Sensor Instances
+    sensor1 : sensor
+        port map (
+            clk => clk,
+            trig => trig1,
+            echo => echo1,
+            sensor_out => sig_s1,
+            distance => sig_distance1
+        );
+        
+    sensor2 : sensor
+        port map (
+            clk => clk,
+            trig => trig2,
+            echo => echo2,
+            sensor_out => sig_s2,
+            distance => sig_distance2
+        );
+    -- Counter Instances
+    count : counter
+        generic map (
+            nbit => 16  -- Define a largura do contador
+        )
+        Port map( 
+            clk => clk,  
+            rst => BTNC,   
+            s1  => sig_s1,   
+            s2  => sig_s2,  
+            count => sig_tmp
+        );
+        
+    -- Display Instances
+    display1 : display
+        port map (
+            clk   => clk,
+            rst   => BTNC,
+            bin   => sig_tmp,
+            seg(6)   => CA,
+            seg(5)   => CB,
+            seg(4)   => CC,
+            seg(3)   => CD,
+            seg(2)   => CE,
+            seg(1)   => CF,
+            seg(0)   => CG,
+            dp    => DP,
+            an    => an1
+        );
+    
+    display2 : display
+        port map (
+            clk   => clk,
+            rst   => BTNC,
+            bin   => sig_distance1,
+            seg(6)   => CA,
+            seg(5)   => CB,
+            seg(4)   => CC,
+            seg(3)   => CD,
+            seg(2)   => CE,
+            seg(1)   => CF,
+            seg(0)   => CG,
+            dp    => DP,
+            an    => an2
+        );
+end Behavioral;

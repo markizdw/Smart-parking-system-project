@@ -20,7 +20,7 @@ Maxim Sudakov (BPC-AUD)
 
 The Nexys A7 board is a complete, ready-to-use digital circuit development platform based on the latest Artix-7™ Field Programmable Gate Array (FPGA) from Xilinx®. With its large, high-capacity FPGA, generous external memories, and collection of USB, Ethernet, and other ports, the Nexys A7 can host designs ranging from introductory combinational circuits to powerful embedded processors. Several built-in peripherals, including an accelerometer, temperature sensor, MEMs digital microphone, a speaker amplifier, and several I/O devices allow the Nexys A7 to be used for a wide range of designs without needing any other components.
 
-![Nexys-A7-50T](https://github.com/markizdw/DE1_project_VUT/assets/114153808/192a1c2d-b3d3-4b98-aa74-6d14f4d10b8b)
+![nexys-a7](https://github.com/markizdw/Smart-parking-system-project/assets/114153808/ecbc7230-61e2-44fa-8fe9-191917c8a817)
 
 Source: https://digilent.com/reference/programmable-logic/nexys-a7/reference-manual
 

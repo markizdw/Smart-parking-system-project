@@ -2,17 +2,15 @@ library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
--- Test bench entity declaration
 entity top_level_tb is
--- No ports are required for a test bench entity
+-- This test bench entity does not have ports.
 end top_level_tb;
 
-architecture tb of top_level_tb is
-    
-    -- Component Declaration of the Unit Under Test (UUT)
+architecture behavior of top_level_tb is 
+    -- Component Declaration for the Unit Under Test (UUT)
     component top_level
         Port (
-            clk       : in  std_logic;
+            CLK100MHZ : in  std_logic;
             BTNC      : in  std_logic;
             echo1     : in  std_logic;
             echo2     : in  std_logic;
@@ -26,27 +24,38 @@ architecture tb of top_level_tb is
             CF        : out std_logic;
             CG        : out std_logic;
             DP        : out std_logic;
-            an1       : out std_logic_vector(3 downto 0);
-            an2       : out std_logic_vector(3 downto 0)
+            AN        : out std_logic_vector(7 downto 0);
+            LED16_G   : out std_logic;
+            LED16_R   : out std_logic;
+            LED17_G   : out std_logic;
+            LED17_R   : out std_logic;
+            display_select : in std_logic;
+            sig_out : out std_logic_vector(15 downto 0)
         );
     end component;
 
-    -- Internal Signals to simulate inputs and observe outputs
-    signal clk       : std_logic := '0';
-    signal BTNC      : std_logic := '1';
-    signal echo1     : std_logic := '0';
-    signal echo2     : std_logic := '0';
-    signal trig1     : std_logic;
-    signal trig2     : std_logic;
+    -- Input signals
+    signal CLK100MHZ : std_logic := '0';
+    signal BTNC : std_logic := '0';
+    signal echo1 : std_logic := '0';
+    signal echo2 : std_logic := '0';
+    signal display_select : std_logic := '0';
+
+    -- Output signals
+    signal trig1, trig2 : std_logic;
     signal CA, CB, CC, CD, CE, CF, CG, DP : std_logic;
-    signal an1, an2 : std_logic_vector(3 downto 0);
+    signal AN : std_logic_vector(7 downto 0);
+    signal LED16_G, LED16_R, LED17_G, LED17_R : std_logic;
+    signal sig_out : std_logic_vector(15 downto 0);
+
+    -- Clock period definitions
+    constant clk_period : time := 10 ns;
 
 begin
-
     -- Instantiate the Unit Under Test (UUT)
     uut: top_level
         port map (
-            clk => clk,
+            CLK100MHZ => CLK100MHZ,
             BTNC => BTNC,
             echo1 => echo1,
             echo2 => echo2,
@@ -60,51 +69,48 @@ begin
             CF => CF,
             CG => CG,
             DP => DP,
-            an1 => an1,
-            an2 => an2
+            AN => AN,
+            LED16_G => LED16_G,
+            LED16_R => LED16_R,
+            LED17_G => LED17_G,
+            LED17_R => LED17_R,
+            display_select => display_select,
+            sig_out => sig_out
         );
 
-    -- Clock generation
+    -- Clock process definitions
     clk_process : process
     begin
-        while true loop
-            clk <= '0';
-            wait for 5 ns;  -- 100 MHz Clock
-            clk <= '1';
-            wait for 5 ns;
-        end loop;
+        CLK100MHZ <= '0';
+        wait for clk_period/2;
+        CLK100MHZ <= '1';
+        wait for clk_period/2;
     end process;
 
-    -- Reset Pulse Generation
-    reset_process : process
-    begin
+    -- Stimulus process
+    stim_proc : process
+    begin  
+        -- Initialize Inputs
         BTNC <= '1';
-        wait for 20 ns;  -- Assert reset for 20 ns
+        wait for clk_period*10;  -- Wait for the reset to take effect
         BTNC <= '0';
-        wait for 10 ns;  -- Deassert to allow operation
-        BTNC <= '1';
-        wait;
-    end process;
 
-    -- Stimulus Process for Echo Signals
-    stimulus_process : process
-    begin
-        -- Wait for reset to complete
-        wait for 30 ns;
-
-        -- Simulate echo signal from sensor 1
+        wait for clk_period*10;
         echo1 <= '1';
-        wait for 60 ns;  -- Echo pulse width
+        wait for clk_period*5;
         echo1 <= '0';
 
-        wait for 500 ns;  -- Wait some time before next signal
-
-        -- Simulate echo signal from sensor 2
+        wait for clk_period*10;
         echo2 <= '1';
-        wait for 70 ns;  -- Different echo pulse width for sensor 2
+        wait for clk_period*5;
         echo2 <= '0';
 
-        wait;  -- Hold simulation
-    end process;
+        wait for clk_period*10;
+        display_select <= '1'; -- Change display output
 
-end tb;
+        wait for clk_period*10;
+        display_select <= '0'; -- Change display output back
+
+        wait;
+    end process;
+end behavior;

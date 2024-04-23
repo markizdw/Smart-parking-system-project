@@ -32,6 +32,6 @@ Simple ultrasonic sensor. The basic principle of operation is to receive a refle
 
 User guide (PDF): [HC-SR04 User Guide.pdf](https://github.com/markizdw/DE1_project_VUT/files/15001950/HC-SR04.User.Guide.pdf)
 
-#Testbench
+# Testbench
 
 ![image](https://github.com/markizdw/Smart-parking-system-project/assets/114153808/5b5e9fc8-f6fa-4c4f-90a1-a392d3355042)

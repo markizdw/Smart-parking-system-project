@@ -10,14 +10,14 @@ entity top_level is
         echo2     : in  std_logic;                    -- Echo sensor 2
         trig1     : out std_logic;                    -- Trigger sensor 1
         trig2     : out std_logic;                    -- Trigger sensor 2
-        CA        : out   std_logic;                    --! Cathode of segment A
-        CB        : out   std_logic;                    --! Cathode of segment B
-        CC        : out   std_logic;                    --! Cathode of segment C
-        CD        : out   std_logic;                    --! Cathode of segment D
-        CE        : out   std_logic;                    --! Cathode of segment E
-        CF        : out   std_logic;                    --! Cathode of segment F
-        CG        : out   std_logic;                    --! Cathode of segment G
-        DP        : out   std_logic;                    --! Decimal point
+        CA        : out   std_logic;                  --! Cathode of segment A
+        CB        : out   std_logic;                  --! Cathode of segment B
+        CC        : out   std_logic;                  --! Cathode of segment C
+        CD        : out   std_logic;                  --! Cathode of segment D
+        CE        : out   std_logic;                  --! Cathode of segment E
+        CF        : out   std_logic;                  --! Cathode of segment F
+        CG        : out   std_logic;                  --! Cathode of segment G
+        DP        : out   std_logic;                  --! Decimal point
         AN        : out std_logic_vector(7 downto 0);
         LED16_G   : out std_logic;
         LED16_R   : out std_logic;
@@ -29,13 +29,12 @@ end top_level;
 
 architecture Behavioral of top_level is
     
-    -- Component Declarations
     component sensor is
       Port (
-            clk : in STD_LOGIC;  -- Clock
-            trig : out STD_LOGIC;  -- Pino Trigger do HC-SR04
-            echo : in STD_LOGIC;  -- Pino Echo do HC-SR04
-            sensor_out : out STD_LOGIC;  -- Sinal processado do sensor
+            clk : in STD_LOGIC;         
+            trig : out STD_LOGIC;         
+            echo : in STD_LOGIC;          
+            sensor_out : out STD_LOGIC;   
             led_green : out STD_LOGIC;
             led_red : out STD_LOGIC;
             distance : out std_logic_vector(15 downto 0)
@@ -44,7 +43,7 @@ architecture Behavioral of top_level is
     
     component counter is
       generic(
-        nbit : integer := 16  -- Número de bits do contador aumentado para suportar 4 dígitos BCD
+        nbit : integer := 16
       );
       Port ( 
         clk : in std_logic;
@@ -59,21 +58,19 @@ architecture Behavioral of top_level is
             port (
                 clk   : in  std_logic;
                 rst   : in  std_logic;
-                bin   : in  std_logic_vector(15 downto 0);  -- Entrada binária ajustada para 4 dígitos
+                bin   : in  std_logic_vector(15 downto 0); 
                 seg   : out std_logic_vector(6 downto 0);
                 dp    : out std_logic;
                 an    : out std_logic_vector(3 downto 0)
             );
    end component;
 
-    -- Internal Signals
     signal sig_s1, sig_s2 : std_logic;
-    signal sig_tmp : std_logic_vector(15 downto 0); -- Ajustado para 4 dígitos
-    signal sig_distance1, sig_distance2 : std_logic_vector(15 downto 0); -- Separate distance signals
+    signal sig_tmp : std_logic_vector(15 downto 0);
+    signal sig_distance1, sig_distance2 : std_logic_vector(15 downto 0); 
     signal CA1, CB1, CC1, CD1, CE1, CF1, CG1, DP1, CA2, CB2, CC2, CD2, CE2, CF2, CG2, DP2 : std_logic;
 
 begin
-    -- Sensor Instances
     sensor1 : sensor
         port map (
             clk => CLK100MHZ,
@@ -96,10 +93,10 @@ begin
             sensor_out => sig_s2,
             distance => sig_distance2
         );
-    -- Counter Instances
+
     count : counter
         generic map (
-            nbit => 16  -- Define a largura do contador
+            nbit => 16 
         )
         Port map( 
             clk => CLK100MHZ,  
@@ -109,7 +106,7 @@ begin
             count => sig_tmp
         );
         
-    -- Display Instances
+
     display1 : display
         port map (
             clk   => CLK100MHZ,

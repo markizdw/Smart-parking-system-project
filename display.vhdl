@@ -1,25 +1,25 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL; -- Para manipulaç?o de números
+use IEEE.NUMERIC_STD.ALL;
 
 entity display is
     Port (
-        clk     : in  std_logic;             -- Clock principal
-        rst     : in  std_logic;             -- Reset
-        bin     : in  std_logic_vector(15 downto 0); -- Entrada binária (4 dígitos BCD)
-        seg     : out std_logic_vector(6 downto 0);  -- Saídas para os segmentos (A-G)
-        dp      : out std_logic;             -- Saída para o ponto decimal (DP)
-        an      : out std_logic_vector(3 downto 0)  -- Ânodos para cada dígito (multiplexaç?o)
+        clk     : in  std_logic;            
+        rst     : in  std_logic;           
+        bin     : in  std_logic_vector(15 downto 0); 
+        seg     : out std_logic_vector(6 downto 0);  
+        dp      : out std_logic;        
+        an      : out std_logic_vector(3 downto 0) 
     );
 end display;
 
 architecture Behavioral of display is
-    signal digit_index : integer range 0 to 3 := 0;  -- Controla qual dígito está ativo
-    signal current_digit : std_logic_vector(3 downto 0);  -- Dígito atual sendo exibido
+    signal digit_index : integer range 0 to 3 := 0;
+    signal current_digit : std_logic_vector(3 downto 0);
 
--- Funç?o para decodificar dígito BCD para 7 segmentos
+
 function decode_digit(digit : std_logic_vector(3 downto 0)) return std_logic_vector is
-    variable seg : std_logic_vector(6 downto 0); -- 7 segmentos A-G
+    variable seg : std_logic_vector(6 downto 0); 
 begin
     case digit is
         when "0000" => seg := "0000001"; -- 0
@@ -32,13 +32,12 @@ begin
         when "0111" => seg := "0001111"; -- 7
         when "1000" => seg := "0000000"; -- 8
         when "1001" => seg := "0000100"; -- 9
-        when others => seg := "1111111"; -- Apaga o display ou define para 'E' para erro
+        when others => seg := "1111111"; 
     end case;
     return seg;
 end decode_digit;
 
 begin
-    -- Processo de multiplexaç?o dos dígitos
     digit_control: process(clk, rst)
     begin
         if rising_edge(clk) then
@@ -50,7 +49,6 @@ begin
         end if;
     end process;
 
-    -- Atualiza o ânodo e o segmento baseado no dígito ativo
     anode_segment_control: process(clk)
     begin
         if rising_edge(clk) then
@@ -68,10 +66,10 @@ begin
                     an <= "0111";
                     current_digit <= bin(15 downto 12);
                 when others =>
-                    an <= "1111";  -- Todos os dígitos desligados
+                    an <= "1111"; 
             end case;
-            seg <= decode_digit(current_digit);  -- Chama a funç?o para decodificar o dígito
-            dp <= '1';  -- Ponto decimal desativado
+            seg <= decode_digit(current_digit); 
+            dp <= '1'; 
         end if;
     end process;
 

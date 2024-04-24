@@ -37,12 +37,16 @@ User guide (PDF): [HC-SR04 User Guide.pdf](https://github.com/markizdw/DE1_proje
 
 # Testbenches
 
+## Display
 ![image](https://github.com/markizdw/Smart-parking-system-project/assets/114153808/a82f71ff-b4ec-4838-b1f1-49133fad91ad)
 
+## Counter
 ![image](https://github.com/markizdw/Smart-parking-system-project/assets/114153808/4d7c61a0-2968-4fa1-946a-c7fd06c44c34)
 
+## Sensor
 ![image](https://github.com/markizdw/Smart-parking-system-project/assets/114153808/dbbdb8a9-045a-4e5e-b7fc-804b0de59818)
 
+## Top level
 ![image](https://github.com/markizdw/Smart-parking-system-project/assets/114153808/ee073782-4d1f-4e7b-b96e-15a8ea24e052)
 
 # Scheme

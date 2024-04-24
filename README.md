@@ -8,7 +8,7 @@ This project presents a smart parking monitoring system designed to optimise the
 ### Project team
 Cristóvão Cristóvão (BPC-TLI)
 
-Dominik Eis (BPC-EKT)
+Dominik Eis (BPC-EKT) 
 
 Filip Dráb (BPC-TLI)
 
